@@ -12,10 +12,10 @@ The system includes multiple collaborative agents running inside an execution gr
 3. **Macroeconomic Sentiment Agent**: Aggregates news articles, extracts sentiment score vectors, and maps macro market indicators (inflation CPI, interest rates, geopolitics) to a net sentiment momentum value.
 4. **Gold Market Reporting Agent**: Consolidates quantitative and sentiment outputs to generate a formatted markdown briefing report.
 
-```
+```text
        [Dashboard UI] <--- FastAPI (Port 3000) ---> [ADK 2.0 Workflow Engine]
-                                                             |
-            +------------------------------------------------+
+                                                                             |
+            +----------------------------------------------------------------+
             |
             v
    [Data Orchestrator] <---------------------> [MCP Server (XAUUSD prices, news)]
@@ -25,7 +25,7 @@ The system includes multiple collaborative agents running inside an execution gr
             |
             v (Ingests prices)
      [Quant Analyst] <------ executes indicator scripts ------> [Restricted Sandbox]
-            |                                                      (Pandas / math)
+            |                                                        (Pandas / math)
             v (Writes indicators & crossover signals)
       [Workflow State]
             |
@@ -104,7 +104,7 @@ The front-end user interface is designed using responsive vanilla CSS layouts:
 
 ```text
 +-----------------------------------------------------------------------------------------+
-| ✨ XAUUSD: Gold Market Insight System                           [Live status] [15:54:02] |
+| ✨ XAUUSD: Gold Market Insight System                           [Live status] |
 +-----------------------------------------------------------------------------------------+
 |  ORCHESTRATION CONTROLS           |  XAUUSD SPOT PRICE CHART OVERLAYS                   |
 |  Quant RSI Period:   [ 14 ]       |  $2397.14 (+0.14%)                                  |
@@ -190,5 +190,3 @@ Launch the local web server:
 python backend/app.py
 ```
 Open [http://localhost:3000](http://localhost:3000) in your web browser.
-#   X A U U S D - G o l d - M a r k e t - I n s i g h t - S y s t e m  
- 

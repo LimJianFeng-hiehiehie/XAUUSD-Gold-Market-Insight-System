@@ -27,7 +27,9 @@
 ## 🧭 Overview
 
 The **XAUUSD Gold Market Insight System** is a collaborative multi-agent pipeline that fuses **quantitative technical analysis**, **macroeconomic sentiment intelligence**, and **live market data** into a single, automatically generated daily briefing — rendered through a premium, real-time analytics dashboard.
-
+<!-- Uploading "Screenshot 2026-07-02 165423.png"... -->
+<!-- Uploading "Screenshot 2026-07-02 165434.png"... -->
+<!-- Uploading "Screenshot 2026-07-02 165444.png"... -->
 Four specialized agents operate inside a stateful graph workflow, each contributing a distinct layer of market insight:
 
 | Agent | Role | Output |

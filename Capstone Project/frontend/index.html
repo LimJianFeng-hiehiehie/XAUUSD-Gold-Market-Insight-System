@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>XAUUSD Gold Market Insight System</title>
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Sidebar / Header Area -->
+        <header class="app-header">
+            <div class="logo-area">
+                <div class="logo-icon">✨</div>
+                <div class="logo-text">
+                    <h1>XAUUSD</h1>
+                    <span>Gold Market Insight System</span>
+                </div>
+            </div>
+            <div class="header-meta">
+                <div class="badge status-badge live">System Active</div>
+                <div class="time-display" id="current-time">--:--:--</div>
+            </div>
+        </header>
+
+        <!-- Dashboard Grid Layout -->
+        <main class="dashboard-grid">
+            
+            <!-- COLUMN 1: Control Panel & Live Statistics -->
+            <section class="grid-card control-panel">
+                <h2 class="card-title">Orchestration Controls</h2>
+                <p class="card-subtitle">Configure ADK 2.0 Agent settings and trigger multi-agent workflows.</p>
+                
+                <form id="workflow-form" class="workflow-form">
+                    <div class="form-group">
+                        <label for="rsi-period">Quant RSI Period</label>
+                        <input type="number" id="rsi-period" name="custom_rsi_period" min="2" max="100" value="14">
+                    </div>
+                    <div class="form-group-row">
+                        <div class="form-group">
+                            <label for="sma-fast">Fast SMA (days)</label>
+                            <input type="number" id="sma-fast" name="custom_sma_fast" min="2" max="100" value="14">
+                        </div>
+                        <div class="form-group">
+                            <label for="sma-slow">Slow SMA (days)</label>
+                            <input type="number" id="sma-slow" name="custom_sma_slow" min="5" max="200" value="50">
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-primary" id="btn-run">
+                        <span class="btn-text">Execute Multi-Agent Workflow</span>
+                        <div class="btn-loader hidden"></div>
+                    </button>
+                </form>
+                
+                <div class="agent-metrics">
+                    <h3 class="section-title">Agent Execution Performance</h3>
+                    <ul class="perf-list" id="perf-list">
+                        <li>
+                            <span class="agent-name">Data Orchestrator</span>
+                            <span class="agent-time" id="perf-orchestrator">--s</span>
+                        </li>
+                        <li>
+                            <span class="agent-name">Quant Analyst</span>
+                            <span class="agent-time" id="perf-quant">--s</span>
+                        </li>
+                        <li>
+                            <span class="agent-name">Macro Sentiment</span>
+                            <span class="agent-time" id="perf-sentiment">--s</span>
+                        </li>
+                        <li>
+                            <span class="agent-name">Reporting Agent</span>
+                            <span class="agent-time" id="perf-reporting">--s</span>
+                        </li>
+                        <li class="total-row">
+                            <span class="agent-name">Total Core Latency</span>
+                            <span class="agent-time font-highlight" id="perf-total">--s</span>
+                        </li>
+                    </ul>
+                </div>
+            </section>
+
+            <!-- COLUMN 2: Prices, Charts & Technical Overlay -->
+            <section class="grid-card chart-card">
+                <div class="chart-header">
+                    <div>
+                        <h2 class="card-title">XAUUSD Technical Analysis</h2>
+                        <p class="card-subtitle">Real-time Spot Gold charts with rolling Moving Average overlays.</p>
+                    </div>
+                    <div class="chart-legend" id="chart-legend-metrics">
+                         <span class="price-val" id="chart-live-price">$--.--</span>
+                         <span class="change-pct" id="chart-live-change">--%</span>
+                    </div>
+                </div>
+                <div class="chart-container">
+                    <canvas id="priceChart"></canvas>
+                </div>
+                <div class="chart-container sub-chart">
+                    <canvas id="rsiChart"></canvas>
+                </div>
+            </section>
+
+            <!-- COLUMN 3: Live Market Metrics Cards -->
+            <section class="metrics-summary-container">
+                <!-- Card 1: Live Price -->
+                <div class="metric-card gold-glow">
+                    <div class="metric-info">
+                        <span class="metric-label">Spot Gold Ticker</span>
+                        <div class="metric-value-row">
+                            <span class="metric-value" id="live-price">$--.--</span>
+                            <span class="metric-trend" id="price-change-trend">--</span>
+                        </div>
+                        <div class="spread-display">Bid: <span id="bid-price">$--</span> / Ask: <span id="ask-price">$--</span></div>
+                    </div>
+                    <div class="metric-icon">💰</div>
+                </div>
+
+                <!-- Card 2: Market Sentiment -->
+                <div class="metric-card sentiment-glow">
+                    <div class="metric-info">
+                        <span class="metric-label">Macro Sentiment Index</span>
+                        <div class="metric-value-row">
+                            <span class="metric-value text-small" id="sentiment-label">LOADING</span>
+                        </div>
+                        <div class="sentiment-score-bar">
+                            <div class="score-fill" id="sentiment-bar-fill" style="width: 50%"></div>
+                        </div>
+                        <div class="sentiment-meta">Avg Score: <span id="sentiment-score">0.0</span></div>
+                    </div>
+                    <div class="metric-icon">📊</div>
+                </div>
+
+                <!-- Card 3: Technical Indicators -->
+                <div class="metric-card signals-glow">
+                    <div class="metric-info">
+                        <span class="metric-label">Quant Technical Signals</span>
+                        <div class="metric-value-row">
+                            <span class="metric-value text-small" id="technical-trend">NEUTRAL</span>
+                        </div>
+                        <div class="signals-meta">RSI: <span id="technical-rsi">--</span> (<span id="rsi-status">--</span>)</div>
+                        <div class="signals-meta">Crossover: <span id="crossover-signal">--</span></div>
+                    </div>
+                    <div class="metric-icon">⚡</div>
+                </div>
+            </section>
+
+            <!-- ROW 2: News Stream & Workflow Console -->
+            <section class="grid-card logs-card">
+                <h2 class="card-title">Workflow Execution Logs</h2>
+                <div class="logs-console" id="logs-console">
+                    <p class="console-placeholder">Waiting for workflow trigger...</p>
+                </div>
+            </section>
+
+            <section class="grid-card news-card">
+                <h2 class="card-title">Macroeconomic News Stream</h2>
+                <div class="news-list" id="news-list">
+                    <p class="news-placeholder">Fetching articles...</p>
+                </div>
+            </section>
+
+            <!-- ROW 3: Unified daily briefing report -->
+            <section class="grid-card briefing-card full-width">
+                <h2 class="card-title">Unified Daily Briefing Report</h2>
+                <p class="card-subtitle">Aggregated AI insights generated by the Gold Market Reporting Agent.</p>
+                <div class="briefing-content markdown-body" id="briefing-report-content">
+                    <p class="briefing-placeholder">Daily Briefing will appear here once the workflow executes.</p>
+                </div>
+            </section>
+
+        </main>
+        
+        <footer class="app-footer">
+            <p>&copy; 2026 Capstone Project - XAUUSD Gold Market Insight System. Powered by ADK 2.0 & MCP Server.</p>
+        </footer>
+    </div>
+    <script src="/app.js"></script>
+</body>
+</html>
